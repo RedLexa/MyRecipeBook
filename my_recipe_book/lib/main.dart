@@ -3,6 +3,7 @@ import 'package:my_recipe_book/repositories/recipes_repository.dart';
 import 'package:my_recipe_book/services/recipes_service.dart';
 import 'package:my_recipe_book/view_models/home_view_model.dart';
 import 'package:my_recipe_book/views/home_screen.dart';
+import 'package:my_recipe_book/views/login_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,9 +28,9 @@ class MyRecipeBook extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }
