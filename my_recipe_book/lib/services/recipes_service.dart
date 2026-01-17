@@ -50,7 +50,7 @@ class RecipesService {
     return recipes[id];
   }
 
-  int getRecipesLength() {
-    return recipes.length;
+  void deleteRecipe(int id) {
+    recipes.removeAt(id);
   }
 }
