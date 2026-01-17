@@ -7,8 +7,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> entries = <String>['A', 'B', 'C'];
-    final List<int> colorCodes = <int>[600, 500, 100];
 
     return Scaffold(
       appBar: AppBar(
@@ -58,10 +56,57 @@ class HomeScreen extends StatelessWidget {
                           return Container(
                             height: 50,
                             color: Colors.amber[200],
-                            child: Center(child: Text('${viewModel.recipes[index].title}')),
+                            child: Consumer<HomeViewModel>(
+                              builder: (context, viewModel, _) {
+                                return Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                        child: SubmenuButton(
+                                          menuChildren: [
+                                            MenuItemButton(
+                                              onPressed: () {
+                                                viewModel.deleteRecipe(index);
+                                              },
+                                              leadingIcon: const Icon(Icons.delete),
+                                              child: const Text('Delete'),
+                                            ),
+                                            MenuItemButton(
+                                              onPressed: () {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(content: Text('Coming soon!')),
+                                                );
+                                              },
+                                              leadingIcon: const Icon(Icons.edit),
+                                              child: const Text('Edit'),
+                                            ),
+                                          ],
+                                          child: Icon(
+                                            Icons.menu,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
+                                      //ElevatedButton(onPressed: null, child: Icon(Icons.menu, size: 24,)),
+                                      Center(child: Text('${viewModel.recipes[index].title}')),
+                                      IconButton
+                                        (onPressed: () {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Coming soon!')),
+                                        );
+                                      },
+                                          icon: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 24,
+                                          )
+                                      )
+                                    ]
+                                );
+                              },
+                            ),
                           );
-                          },
-                    ),
+                        },
+                      ),
                   ),
                 ],
               );
