@@ -29,6 +29,17 @@ class RecipesService {
           "put a lot of nutella and enjoyyyyy"
         ]
     ),
+    RecipeModel(
+        id: 3,
+        title: "Pierogi",
+        description: "Incredible polish dish",
+        ingredients: [
+          "pierogi"
+        ],
+        steps: [
+          "Idk"
+        ]
+    ),
   ];
 
   List getAllRecipes() {
