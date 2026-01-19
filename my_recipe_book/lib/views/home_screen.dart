@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/home_view_model.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,19 +27,14 @@ class HomeScreen extends StatelessWidget {
         title: Text("MyRecipeBook"),
         actions: [
           IconButton(
-              onPressed: () {
-                //Navigator.push(
-                  //context,
-                  //MaterialPageRoute(
-                    //builder: (context) => const ProfileScreen(),
-                  //),
-                //);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Coming soon!')),
-                );
-              }, icon: Icon(
-            Icons.account_circle
-          ))
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+            icon: const Icon(Icons.account_circle),
+          ),
         ]
 
       ),
