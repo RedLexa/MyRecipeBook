@@ -43,6 +43,7 @@ class RecipeCreationView extends StatelessWidget{
           maxLines: null,
           decoration: const InputDecoration(
             labelText: 'Ingredients',
+            hintText: 'Ingredients',
             border: OutlineInputBorder())),
 
         const SizedBox(height: 16),
@@ -52,6 +53,7 @@ class RecipeCreationView extends StatelessWidget{
           maxLines: null,
           decoration: const InputDecoration(
             labelText: 'Steps',
+            hintText: 'Steps',
             border: OutlineInputBorder())),
 
         const SizedBox(height: 32),
