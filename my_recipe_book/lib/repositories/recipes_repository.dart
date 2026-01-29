@@ -1,20 +1,28 @@
+import 'package:api_response/api_response.dart';
+import 'package:dio/dio.dart';
 import 'package:my_recipe_book/models/recipe.dart';
 import 'package:my_recipe_book/services/recipes_service.dart';
 
+import '../services/api_service.dart';
+
 class RecipesRepository {
-  RecipesService recipesService;
+  final ApiService _apiService;
 
-  RecipesRepository(this.recipesService);
+  RecipesRepository(this._apiService);
 
-  List getAllRecipes() {
-    return recipesService.getAllRecipes();
-  }
+  Future<List<RecipeModel>> getAllRecipes(String username) async {
+    try {
+      final response = await _apiService.get('/recipes/all/$username');
 
-  RecipeModel getRecipe(int id) {
-    return recipesService.getRecipe(id);
-  }
+      final apiResponse = ApiResponse<List<RecipeModel>>.fromJson(response);
 
-  void deleteRecipe(int id) {
-    recipesService.deleteRecipe(id);
+      if (!apiResponse.success) {
+        throw ApiException.fromApiError(apiResponse.error);
+      }
+
+      return apiResponse.data;
+    } on DioException catch (e) {
+      throw _handleDioError(e);;
+    }
   }
 }
