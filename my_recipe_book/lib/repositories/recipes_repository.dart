@@ -14,7 +14,7 @@ class RecipesRepository {
     return recipesService.getRecipe(id);
   }
 
-  int getRecipesLength() {
-    return recipesService.getRecipesLength();
+  void deleteRecipe(int id) {
+    recipesService.deleteRecipe(id);
   }
 }

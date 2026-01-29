@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipe_book/models/recipe.dart';
 import 'package:my_recipe_book/repositories/recipes_repository.dart';
 
 
@@ -13,7 +14,8 @@ class HomeViewModel extends ChangeNotifier {
     //TODO
   }
 
-  void deleteRecipe() {
-    //TODO
+  void deleteRecipe(int id) {
+    recipesRepository.deleteRecipe(id);
+    notifyListeners();
   }
 }

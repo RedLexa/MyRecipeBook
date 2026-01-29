@@ -14,7 +14,8 @@ class RecipesService {
         steps: [
           "open the wrap",
           "put the meat into the wrap"
-        ]
+        ],
+      imagePath: "lib/images/Burritos.jpeg"
     ),
     RecipeModel(
         id: 2,
@@ -27,7 +28,8 @@ class RecipesService {
         steps: [
           "cook pancakes",
           "put a lot of nutella and enjoyyyyy"
-        ]
+        ],
+      imagePath: "lib/images/crepes.jpg"
     ),
     RecipeModel(
         id: 3,
@@ -38,7 +40,8 @@ class RecipesService {
         ],
         steps: [
           "Idk"
-        ]
+        ],
+      imagePath: "lib/images/pierogi.jpg"
     ),
   ];
 
@@ -50,7 +53,7 @@ class RecipesService {
     return recipes[id];
   }
 
-  int getRecipesLength() {
-    return recipes.length;
+  void deleteRecipe(int id) {
+    recipes.removeAt(id);
   }
 }
