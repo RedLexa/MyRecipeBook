@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
+import 'home_screen.dart';
 
 class RecipeCreationView extends StatelessWidget{
 
@@ -15,6 +16,18 @@ class RecipeCreationView extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                ),
+              );
+            }, icon: Icon(
+          Icons.home,
+          size: 24,
+        )),
         title: const Text('Create New Recipe'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: Padding(padding: const EdgeInsets.all(8),
