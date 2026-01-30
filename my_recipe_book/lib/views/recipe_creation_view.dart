@@ -32,6 +32,14 @@ class RecipeCreationView extends StatelessWidget{
         backgroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: Padding(padding: const EdgeInsets.all(8),
       child: Column(children: [
+
+        Image.asset(
+        'lib/images/placeholder.jpg',
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        ),
+
         TextField(
           controller: _titleController, 
           decoration: const InputDecoration(hintText: 'Title'),
@@ -112,6 +120,7 @@ class RecipeCreationView extends StatelessWidget{
             return; 
           }
 
+          const String imagePath = 'images/placeholder.jpg';
 
           final newRecipe = RecipeModel(
               id: DateTime.now().millisecondsSinceEpoch.toInt(),
@@ -119,6 +128,7 @@ class RecipeCreationView extends StatelessWidget{
               description: description,
               ingredients: ingredients,
               steps: steps,
+              imagePath: imagePath,
             );
             
           }, 

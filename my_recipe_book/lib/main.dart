@@ -4,6 +4,7 @@ import 'package:my_recipe_book/services/recipes_service.dart';
 import 'package:my_recipe_book/view_models/home_view_model.dart';
 import 'package:my_recipe_book/views/home_screen.dart';
 import 'package:my_recipe_book/views/login_screen.dart';
+import 'package:my_recipe_book/views/recipe_creation_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
