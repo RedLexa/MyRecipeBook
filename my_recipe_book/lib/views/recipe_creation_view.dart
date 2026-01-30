@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
+import 'home_screen.dart';
 
 class RecipeCreationView extends StatelessWidget{
 
@@ -15,10 +16,30 @@ class RecipeCreationView extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                ),
+              );
+            }, icon: Icon(
+          Icons.home,
+          size: 24,
+        )),
         title: const Text('Create New Recipe'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: Padding(padding: const EdgeInsets.all(8),
       child: Column(children: [
+
+        Image.asset(
+        'lib/images/placeholder.jpg',
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        ),
+
         TextField(
           controller: _titleController, 
           decoration: const InputDecoration(hintText: 'Title'),
@@ -99,6 +120,7 @@ class RecipeCreationView extends StatelessWidget{
             return; 
           }
 
+          const String imagePath = 'images/placeholder.jpg';
 
           final newRecipe = RecipeModel(
               id: DateTime.now().millisecondsSinceEpoch.toInt(),
@@ -106,6 +128,7 @@ class RecipeCreationView extends StatelessWidget{
               description: description,
               ingredients: ingredients,
               steps: steps,
+              imagePath: imagePath,
             );
             
           }, 
