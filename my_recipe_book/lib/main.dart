@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe_book/repositories/recipes_repository.dart';
-import 'package:my_recipe_book/services/recipes_service.dart';
+import 'package:my_recipe_book/services/api_service.dart';
 import 'package:my_recipe_book/view_models/home_view_model.dart';
 import 'package:my_recipe_book/views/home_screen.dart';
 import 'package:my_recipe_book/views/login_screen.dart';
 import 'package:my_recipe_book/views/recipe_creation_view.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  final RecipesService recipesService = RecipesService();
+  final ApiService apiService = ApiService();
 
-  final RecipesRepository recipesRepository = RecipesRepository(recipesService);
+  final RecipesRepository recipesRepository = RecipesRepository(apiService);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => HomeViewModel(recipesRepository),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+        create: (_) => HomeViewModel(recipesRepository),
+        ),
+        Provider<ApiService>.value(value: apiService),
+        Provider<RecipesRepository>.value(value: recipesRepository),
+      ],
       child: const MyRecipeBook(),
-    ),
+    )
   );
 }
 

@@ -83,8 +83,8 @@ class HomeScreen extends StatelessWidget {
                                               menuChildren: [
                                                 MenuItemButton(
                                                   onPressed: () {
-                                                    viewModel.deleteRecipe(
-                                                        index);
+                                                    //viewModel.deleteRecipe(
+                                                        //index);
                                                   },
                                                   leadingIcon: const Icon(
                                                       Icons.delete),
@@ -112,8 +112,8 @@ class HomeScreen extends StatelessWidget {
                                           ),
                                           //ElevatedButton(onPressed: null, child: Icon(Icons.menu, size: 24,)),
                                           Center(child: Text(
-                                              '${viewModel.recipes[index]
-                                                  .title}')),
+                                              viewModel.recipes[index]
+                                                  .title)),
                                           IconButton
                                             (onPressed: () {
                                             ScaffoldMessenger

@@ -4,18 +4,27 @@ import 'package:my_recipe_book/repositories/recipes_repository.dart';
 
 
 class HomeViewModel extends ChangeNotifier {
-  RecipesRepository recipesRepository;
+  final RecipesRepository _recipesRepository;
 
-  HomeViewModel(this.recipesRepository);
+  List<RecipeModel> _recipes = [];
 
-  late List recipes = recipesRepository.getAllRecipes();
-
-  void addRecipe() {
-    //TODO
+  HomeViewModel(this._recipesRepository) {
+    _loadRecipes();
   }
 
-  void deleteRecipe(int id) {
-    recipesRepository.deleteRecipe(id);
+  Future<void> _loadRecipes() async {
+    _recipes = await _recipesRepository.getAllRecipes("alice");
     notifyListeners();
   }
+
+  List<RecipeModel> get recipes => _recipes;
+
+
+
+
+
+  //void deleteRecipe(int id) {
+    //_recipesRepository.deleteRecipe(id);
+    //notifyListeners();
+  //}
 }

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 class ApiService {
   late final Dio _dio;
 
-  static const String baseUrl = 'http://localhost:3002/api/v1';
+  static const String baseUrl = 'http://10.0.2.2:3002/api/v1';
 
   ApiService({Dio? dio}) {
     _dio = dio ?? _createDio();
