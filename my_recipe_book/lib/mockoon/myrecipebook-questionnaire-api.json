@@ -57,6 +57,33 @@
           "filePath": "",
           "databucketID": "8kle",
           "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "username",
+              "value": "alice",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "2b46f24c-19d9-4c92-b44d-45a89f9a3a85",
+          "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"404\",\n    \"message\": \"User not found\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
           "disableTemplating": false,
@@ -243,6 +270,33 @@
           "filePath": "",
           "databucketID": "",
           "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "id",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "470358d4-2acd-4d5e-aea5-1a0583c9a3ac",
+          "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"404\",\n    \"message\": \"Recipe not found\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
           "disableTemplating": false,
@@ -340,7 +394,7 @@
       "id": "8kle",
       "name": "Recipes",
       "documentation": "",
-      "value": "[\r\n  {\r\n    \"id\": 1,\r\n    \"title\": \"Burritos\",\r\n    \"description\": \"A classic Mexican-inspired dish, easy to customize.\",\r\n    \"ingredients\": [\r\n      \"tortilla wraps\",\r\n      \"ground beef\",\r\n      \"cheese\",\r\n      \"tomato sauce\"\r\n    ],\r\n    \"steps\": [\r\n      \"Cook the ground beef in a pan\",\r\n      \"Warm the tortilla wraps\",\r\n      \"Add beef and sauce to the wrap\",\r\n      \"Sprinkle cheese and roll the wrap\"\r\n    ],\r\n    \"imagePath\": \"lib/images/Burritos.jpeg\"\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"title\": \"Pancakes\",\r\n    \"description\": \"Soft and fluffy pancakes for breakfast.\",\r\n    \"ingredients\": [\r\n      \"flour\",\r\n      \"milk\",\r\n      \"eggs\",\r\n      \"sugar\"\r\n    ],\r\n    \"steps\": [\r\n      \"Mix all ingredients in a bowl\",\r\n      \"Heat a pan\",\r\n      \"Pour batter into the pan\",\r\n      \"Cook until golden on both sides\"\r\n    ],\r\n    \"imagePath\": \"lib/images/crepes.jpg\"\r\n  },\r\n  {\r\n    \"id\": 3,\r\n    \"title\": \"Pierogi\",\r\n    \"description\": \"Traditional Polish dumplings filled with potatoes and cheese.\",\r\n    \"ingredients\": [\r\n      \"flour\",\r\n      \"eggs\",\r\n      \"water\",\r\n      \"potatoes\",\r\n      \"cheese\",\r\n      \"onion\"\r\n    ],\r\n    \"steps\": [\r\n      \"Prepare the dough with flour, eggs, and water\",\r\n      \"Cook and mash the potatoes, then mix with cheese\",\r\n      \"Fill the dough with the potato mixture and shape the pierogi\",\r\n      \"Boil the pierogi until they float\",\r\n      \"Optionally fry with onions before serving\"\r\n    ],\r\n    \"imagePath\": \"lib/images/pierogi.jpg\"\r\n  }\r\n]\r\n"
+      "value": "[\r\n  {\r\n    \"id\": 0,\r\n    \"title\": \"Burritos\",\r\n    \"description\": \"A classic Mexican-inspired dish, easy to customize.\",\r\n    \"ingredients\": [\r\n      \"tortilla wraps\",\r\n      \"ground beef\",\r\n      \"cheese\",\r\n      \"tomato sauce\"\r\n    ],\r\n    \"steps\": [\r\n      \"Cook the ground beef in a pan\",\r\n      \"Warm the tortilla wraps\",\r\n      \"Add beef and sauce to the wrap\",\r\n      \"Sprinkle cheese and roll the wrap\"\r\n    ],\r\n    \"imagePath\": \"lib/images/Burritos.jpeg\"\r\n  },\r\n  {\r\n    \"id\": 1,\r\n    \"title\": \"Pancakes\",\r\n    \"description\": \"Soft and fluffy pancakes for breakfast.\",\r\n    \"ingredients\": [\r\n      \"flour\",\r\n      \"milk\",\r\n      \"eggs\",\r\n      \"sugar\"\r\n    ],\r\n    \"steps\": [\r\n      \"Mix all ingredients in a bowl\",\r\n      \"Heat a pan\",\r\n      \"Pour batter into the pan\",\r\n      \"Cook until golden on both sides\"\r\n    ],\r\n    \"imagePath\": \"lib/images/crepes.jpg\"\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"title\": \"Pierogi\",\r\n    \"description\": \"Traditional Polish dumplings filled with potatoes and cheese.\",\r\n    \"ingredients\": [\r\n      \"flour\",\r\n      \"eggs\",\r\n      \"water\",\r\n      \"potatoes\",\r\n      \"cheese\",\r\n      \"onion\"\r\n    ],\r\n    \"steps\": [\r\n      \"Prepare the dough with flour, eggs, and water\",\r\n      \"Cook and mash the potatoes, then mix with cheese\",\r\n      \"Fill the dough with the potato mixture and shape the pierogi\",\r\n      \"Boil the pierogi until they float\",\r\n      \"Optionally fry with onions before serving\"\r\n    ],\r\n    \"imagePath\": \"lib/images/pierogi.jpg\"\r\n  }\r\n]\r\n"
     }
   ],
   "callbacks": []

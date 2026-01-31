@@ -42,102 +42,120 @@ class HomeScreen extends StatelessWidget {
               builder: (context, viewModel, _) {
                 return Column(
                   children: [
-                    Expanded(
-                      child: GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: viewModel.recipes.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE6E6FA),
-                              borderRadius: BorderRadius.circular(12),
+                    if (viewModel.isLoading)
+                      const Expanded(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                      )
+                    else if (viewModel.errorLoading)
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Error ${viewModel.error}: ${viewModel.errorMessage}',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
                             ),
-                            child: Consumer<HomeViewModel>(
-                              builder: (context, viewModel, _) {
-                                return Column(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(16),
-                                          topRight: Radius.circular(16),
+                          ),
+                        ),
+                      )
+                    else
+                      Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(16),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: viewModel.recipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFE6E6FA),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Consumer<HomeViewModel>(
+                                builder: (context, viewModel, _) {
+                                  return Column(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(16),
+                                            topRight: Radius.circular(16),
+                                          ),
+                                          child: Image(
+                                            image: AssetImage(
+                                                viewModel.recipes[index].imagePath),
+                                            height: 130,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                        child: Image(
-                                          image: AssetImage(
-                                              viewModel.recipes[index].imagePath),
-                                          height: 130,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 40,
-                                            child: SubmenuButton(
-                                              menuChildren: [
-                                                MenuItemButton(
-                                                  onPressed: () {
-                                                    //viewModel.deleteRecipe(
-                                                        //index);
-                                                  },
-                                                  leadingIcon: const Icon(
-                                                      Icons.delete),
-                                                  child: const Text('Delete'),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 40,
+                                              child: SubmenuButton(
+                                                menuChildren: [
+                                                  MenuItemButton(
+                                                    onPressed: () {
+                                                      viewModel.deleteRecipe(viewModel.recipes[index].id);
+                                                    },
+                                                    leadingIcon: const Icon(
+                                                        Icons.delete),
+                                                    child: const Text('Delete'),
+                                                  ),
+                                                  MenuItemButton(
+                                                    onPressed: () {
+                                                      ScaffoldMessenger.of(
+                                                          context).showSnackBar(
+                                                        const SnackBar(
+                                                            content: Text(
+                                                                'Coming soon!')),
+                                                      );
+                                                    },
+                                                    leadingIcon: const Icon(
+                                                        Icons.edit),
+                                                    child: const Text('Edit'),
+                                                  ),
+                                                ],
+                                                child: Icon(
+                                                  Icons.menu,
+                                                  size: 24,
                                                 ),
-                                                MenuItemButton(
-                                                  onPressed: () {
-                                                    ScaffoldMessenger.of(
-                                                        context).showSnackBar(
-                                                      const SnackBar(
-                                                          content: Text(
-                                                              'Coming soon!')),
-                                                    );
-                                                  },
-                                                  leadingIcon: const Icon(
-                                                      Icons.edit),
-                                                  child: const Text('Edit'),
-                                                ),
-                                              ],
-                                              child: Icon(
-                                                Icons.menu,
-                                                size: 24,
                                               ),
                                             ),
-                                          ),
-                                          //ElevatedButton(onPressed: null, child: Icon(Icons.menu, size: 24,)),
-                                          Center(child: Text(
-                                              viewModel.recipes[index]
-                                                  .title)),
-                                          IconButton
-                                            (onPressed: () {
-                                            ScaffoldMessenger
-                                                .of(context)
-                                                .showSnackBar(
-                                              const SnackBar(content: Text(
-                                                  'Coming soon!')),
-                                            );
-                                          },
-                                              icon: Icon(
-                                                Icons.arrow_forward_ios,
-                                                size: 24,
-                                              )
-                                          )
-                                        ],
-                                      )
-                                    ]
-                                );
-                              },
-                            ),
-                          );
-                        },
+                                            //ElevatedButton(onPressed: null, child: Icon(Icons.menu, size: 24,)),
+                                            Center(child: Text(
+                                                viewModel.recipes[index]
+                                                    .title)),
+                                            IconButton
+                                              (onPressed: () {
+                                              ScaffoldMessenger
+                                                  .of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(content: Text(
+                                                    'Coming soon!')),
+                                              );
+                                            },
+                                                icon: Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  size: 24,
+                                                )
+                                            )
+                                          ],
+                                        )
+                                      ]
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 );
               }
@@ -145,6 +163,16 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: Consumer<HomeViewModel>(
         builder: (context, viewModel, _) {
+          if (viewModel.errorDeleting) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Error while deleting'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            });
+          }
           return Transform.translate(
             offset: const Offset(0, -30),
             child: FloatingActionButton(

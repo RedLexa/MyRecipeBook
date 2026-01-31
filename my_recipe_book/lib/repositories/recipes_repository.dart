@@ -29,6 +29,23 @@ class RecipesRepository {
     }
   }
 
+  Future<void> deleteRecipe(int id) async {
+    try {
+      final response = await _apiService.delete('/recipes/delete/$id');
+
+      final apiResponse = ApiResponse<void>.fromJson(
+        response as Map<String, dynamic>,
+        (data) {},
+      );
+
+      if (!apiResponse.success) {
+        throw ApiException.fromApiError(apiResponse.error!);
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   ApiException _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
