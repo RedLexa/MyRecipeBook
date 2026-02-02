@@ -31,6 +31,12 @@ class HomeViewModel extends ChangeNotifier {
       _error = e.code ?? "";
       _errorMessage = e.message;
       notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      _errorLoading = true;
+      _error = "Unknown";
+      _errorMessage = e.toString();
+      notifyListeners();
     }
   }
 

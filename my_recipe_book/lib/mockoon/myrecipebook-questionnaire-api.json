@@ -105,11 +105,79 @@
       "endpoint": "users/login",
       "responses": [
         {
-          "uuid": "aa91cf8f-2a80-4763-a79c-669ce305a355",
-          "body": "{\n  \"success\": true\n}",
+          "uuid": "758c9739-ccb9-4661-b8ef-b83082ddd2e2",
+          "body": "{\n  \"success\": true,\n  \"token\": \"mock-token-456\",\n  \"user\": {\n    \"username\": \"bob\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
+          "label": "Valid credentials (bob)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "username",
+              "value": "bob",
+              "operator": "equals",
+              "invert": false
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "secret456",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "e48acf6a-37a6-40a7-ac28-4a2132233f5c",
+          "body": "{\n  \"success\": true,\n  \"token\": \"mock-token-123\",\n  \"user\": {\n    \"username\": \"alice\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Valid credentials (alice)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "username",
+              "value": "alice",
+              "operator": "equals",
+              "invert": false
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "password123",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1",
+          "body": "{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"401\",\n    \"message\": \"Invalid username or password\"\n  }\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "Invalid credentials",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
@@ -137,10 +205,10 @@
       "responses": [
         {
           "uuid": "c90284cc-1d6d-4aff-a973-5c54e439a0e1",
-          "body": "{\n  \"success\": true\n}",
+          "body": "{\n  \"success\": true,\n  \"message\": \"Registration always succeeds, but only two users are supported: alice and bob.\"\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
+          "label": "Always success, but only two users allowed",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",

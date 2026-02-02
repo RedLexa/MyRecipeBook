@@ -71,86 +71,104 @@ class HomeScreen extends StatelessWidget {
                           ),
                           itemCount: viewModel.recipes.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFE6E6FA),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Consumer<HomeViewModel>(
-                                builder: (context, viewModel, _) {
-                                  return Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(16),
-                                            topRight: Radius.circular(16),
-                                          ),
-                                          child: Image(
-                                            image: AssetImage(
-                                                viewModel.recipes[index].imagePath),
-                                            height: 130,
-                                            width: double.infinity,
-                                            fit: BoxFit.cover,
-                                          ),
+                            final recipe = viewModel.recipes[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/recipeDetail',
+                                  arguments: recipe,
+                                );
+                              },
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFE6E6FA),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          topRight: Radius.circular(12),
                                         ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 40,
-                                              child: SubmenuButton(
-                                                menuChildren: [
-                                                  MenuItemButton(
-                                                    onPressed: () {
-                                                      viewModel.deleteRecipe(viewModel.recipes[index].id);
-                                                    },
-                                                    leadingIcon: const Icon(
-                                                        Icons.delete),
-                                                    child: const Text('Delete'),
-                                                  ),
-                                                  MenuItemButton(
-                                                    onPressed: () {
-                                                      ScaffoldMessenger.of(
-                                                          context).showSnackBar(
-                                                        const SnackBar(
-                                                            content: Text(
-                                                                'Coming soon!')),
-                                                      );
-                                                    },
-                                                    leadingIcon: const Icon(
-                                                        Icons.edit),
-                                                    child: const Text('Edit'),
-                                                  ),
-                                                ],
-                                                child: Icon(
-                                                  Icons.menu,
-                                                  size: 24,
+                                        child: Image(
+                                          image: AssetImage(recipe.imagePath),
+                                          height: 95,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 36,
+                                            child: SubmenuButton(
+                                              menuChildren: [
+                                                MenuItemButton(
+                                                  onPressed: () {
+                                                    viewModel.deleteRecipe(recipe.id);
+                                                  },
+                                                  leadingIcon: const Icon(
+                                                      Icons.delete, size: 20),
+                                                  child: const Text('Delete'),
                                                 ),
+                                                MenuItemButton(
+                                                  onPressed: () {
+                                                    ScaffoldMessenger.of(
+                                                        context).showSnackBar(
+                                                      const SnackBar(
+                                                          content: Text(
+                                                              'Coming soon!')),
+                                                    );
+                                                  },
+                                                  leadingIcon: const Icon(
+                                                      Icons.edit, size: 20),
+                                                  child: const Text('Edit'),
+                                                ),
+                                              ],
+                                              child: Icon(
+                                                Icons.menu,
+                                                size: 22,
                                               ),
                                             ),
-                                            //ElevatedButton(onPressed: null, child: Icon(Icons.menu, size: 24,)),
-                                            Center(child: Text(
-                                                viewModel.recipes[index]
-                                                    .title)),
-                                            IconButton
-                                              (onPressed: () {
-                                              ScaffoldMessenger
-                                                  .of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(content: Text(
-                                                    'Coming soon!')),
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Flexible(
+                                            child: Text(
+                                              recipe.title,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/recipeDetail',
+                                                arguments: recipe,
                                               );
                                             },
-                                                icon: Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  size: 24,
-                                                )
-                                            )
-                                          ],
-                                        )
-                                      ]
-                                  );
-                                },
+                                            icon: const Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 22,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
                             );
                           },
