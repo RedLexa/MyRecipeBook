@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/home_view_model.dart';
 import 'login_screen.dart';
+import 'package:my_recipe_book/views/recipe_creation_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -195,11 +196,14 @@ class HomeScreen extends StatelessWidget {
             offset: const Offset(0, -30),
             child: FloatingActionButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Coming soon!')),
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RecipeCreationView(),
+                ),
                 );
               },
-              tooltip: 'Increment',
+              tooltip: 'New Recipe',
               child: const Icon(Icons.add),
             ),
           );
