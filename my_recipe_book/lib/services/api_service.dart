@@ -8,8 +8,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 class ApiService {
   late final Dio _dio;
 
-  //static const String localIp = '192.168.1.246'; // <-- CHANGE THIS TO YOUR COMPUTER'S IP
-  static const String localIp = '192.168.0.31';
+  static const String localIp = '192.168.1.246'; // <-- CHANGE THIS TO YOUR COMPUTER'S IP
 
   static Future<String> getBaseUrl() async {
     String url;
