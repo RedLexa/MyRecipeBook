@@ -1,7 +1,9 @@
+
 import 'package:dio/dio.dart';
 import 'package:my_recipe_book/models/recipe.dart';
 import '../models/api_response.dart';
 import '../services/api_service.dart';
+import 'package:flutter/foundation.dart';
 
 class RecipesRepository {
   final ApiService _apiService;
@@ -13,17 +15,39 @@ class RecipesRepository {
       final response = await _apiService.get('/recipes/all/$username');
 
       final apiResponse = ApiResponse<List<RecipeModel>>.fromJson(
-          response as Map<String, dynamic>,
-              (data) => (data as List)
-                  .map((e) => RecipeModel.fromJson(e as Map<String, dynamic>))
-                  .toList(),
+        response as Map<String, dynamic>,
+        (data) => (data as List)
+            .map((e) => RecipeModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+
+      if (!apiResponse.success) {
+        debugPrint('API error: \\nCode: \\${apiResponse.error?.code}\\nMessage: \\${apiResponse.error?.message}');
+        throw ApiException.fromApiError(apiResponse.error!);
+      }
+
+      return apiResponse.data!;
+    } on DioException catch (e) {
+      debugPrint('DioException in getAllRecipes: \\nType: \\${e.type}\\nMessage: \\${e.message}\\nResponse: \\${e.response}');
+      throw _handleDioError(e);
+    } catch (e, stack) {
+      debugPrint('Unexpected error in getAllRecipes: \\nError: \\${e.toString()}\\nStack: \\${stack.toString()}');
+      rethrow;
+    }
+  }
+
+  Future<void> deleteRecipe(int id) async {
+    try {
+      final response = await _apiService.delete('/recipes/delete/$id');
+
+      final apiResponse = ApiResponse<void>.fromJson(
+        response as Map<String, dynamic>,
+        (data) {},
       );
 
       if (!apiResponse.success) {
         throw ApiException.fromApiError(apiResponse.error!);
       }
-
-      return apiResponse.data!;
     } on DioException catch (e) {
       throw _handleDioError(e);
     }

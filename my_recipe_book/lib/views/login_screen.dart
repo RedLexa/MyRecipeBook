@@ -2,6 +2,8 @@ import 'package:my_recipe_book/views/register_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'package:provider/provider.dart';
+import '../services/api_service.dart';
 
 class LoginScreen extends StatefulWidget {
 	const LoginScreen({Key? key}) : super(key: key);
@@ -37,14 +39,43 @@ class _LoginScreenState extends State<LoginScreen> {
 			setState(() {
 				_isLoading = true;
 			});
-			await Future.delayed(const Duration(milliseconds: 500)); // Mock delay
-			setState(() {
-				_isLoading = false;
-			});
-			if (!mounted) return;
-			Navigator.of(context).pushReplacement(
-				MaterialPageRoute(builder: (context) => const HomeScreen()),
-			);
+			try {
+				final apiService = Provider.of<ApiService>(context, listen: false);
+				final response = await apiService.post('/users/login', data: {
+					'username': _usernameController.text.trim(),
+					'password': _passwordController.text.trim(),
+				});
+				setState(() {
+					_isLoading = false;
+				});
+				   if (response != null && response['success'] == true) {
+					   if (!mounted) return;
+					   Navigator.of(context).pushReplacement(
+						   MaterialPageRoute(builder: (context) => const HomeScreen()),
+					   );
+							 } else {
+									 setState(() {
+										 final username = _usernameController.text.trim();
+										 if ((username == 'alice' || username == 'bob') && response != null && response['error'] != null && (response['error']['code'] == 'INVALID_PASSWORD' || (response['error']['message']?.toLowerCase().contains('password') ?? false))) {
+											 _errorMessage = 'Invalid password.';
+										 } else if (username == 'alice' || username == 'bob') {
+											 _errorMessage = 'Invalid password.';
+										 } else {
+											 _errorMessage = 'Login failed, only users alice and bob exist.';
+										 }
+									 });
+							 }
+					 } catch (e) {
+							 setState(() {
+								 _isLoading = false;
+								 final username = _usernameController.text.trim();
+								 if (username == 'alice' || username == 'bob') {
+									 _errorMessage = 'Invalid password.';
+								 } else {
+									 _errorMessage = 'Login failed, only users alice and bob exist.';
+								 }
+							 });
+					 }
 		}
 	}
 

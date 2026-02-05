@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/api_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -34,12 +37,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _isLoading = true;
       });
-      await Future.delayed(const Duration(milliseconds: 500)); // Mock delay
-      setState(() {
-        _isLoading = false;
-      });
-      if (!mounted) return;
-      Navigator.of(context).pop(); // Go back to login after register
+      try {
+        final apiService = Provider.of<ApiService>(context, listen: false);
+        final response = await apiService.post('/users/create', data: {
+          'username': _usernameController.text.trim(),
+          'password': _passwordController.text.trim(),
+        });
+        setState(() {
+          _isLoading = false;
+        });
+        if (response != null && response['success'] == true) {
+          if (!mounted) return;
+          // Show success message and pop back to login
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Registration Successful'),
+              content: Text(response['message'] ?? 'You have registered successfully.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          setState(() {
+            _errorMessage = response != null && response['error'] != null
+                ? response['error']['message'] ?? response['message'] ?? 'Registration failed'
+                : response['message'] ?? 'Registration failed';
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = e.toString();
+        });
+      }
     }
   }
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipe_book/models/recipe.dart';
 import 'package:my_recipe_book/repositories/recipes_repository.dart';
 import 'package:my_recipe_book/services/api_service.dart';
 import 'package:my_recipe_book/view_models/home_view_model.dart';
 import 'package:my_recipe_book/views/home_screen.dart';
 import 'package:my_recipe_book/views/login_screen.dart';
 import 'package:my_recipe_book/views/recipe_creation_view.dart';
+import 'package:my_recipe_book/views/recipe_detail_view.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -39,6 +41,15 @@ class MyRecipeBook extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const LoginScreen(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/recipeDetail') {
+          final recipe = settings.arguments as RecipeModel;
+          return MaterialPageRoute(
+            builder: (context) => RecipeDetailView(recipe: recipe),
+          );
+        }
+        return null;
+      },
     );
   }
 }
