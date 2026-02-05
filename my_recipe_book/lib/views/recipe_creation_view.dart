@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import 'home_screen.dart';
 
-class RecipeCreationView extends StatelessWidget{
+class RecipeCreationView extends StatefulWidget {
+  const RecipeCreationView({super.key});
+
+  @override
+  State<RecipeCreationView> createState() => _RecipeCreationViewState();
+}
+
+class _RecipeCreationViewState extends State<RecipeCreationView> {
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ingredientsController = TextEditingController();
   final _stepsController = TextEditingController();
 
+  String? _imagePath;
 
-  RecipeCreationView({super.key});
+
+  
 
   @override
   Widget build(BuildContext context) {
