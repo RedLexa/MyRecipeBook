@@ -53,6 +53,42 @@ class RecipesRepository {
     }
   }
 
+  Future<RecipeModel> getRecipeById(int id) async {
+    try {
+      final response = await _apiService.get('/recipes/$id');
+
+      final apiResponse = ApiResponse<RecipeModel>.fromJson(
+        response as Map<String, dynamic>,
+        (data) => RecipeModel.fromJson(data as Map<String, dynamic>),
+      );
+
+      if (!apiResponse.success) {
+        throw ApiException.fromApiError(apiResponse.error!);
+      }
+
+      return apiResponse.data!;
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<void> addRecipe(RecipeModel recipe) async {
+    try {
+      final response = await _apiService.post('/recipes/create', data: recipe.toJson());
+
+      final apiResponse = ApiResponse<void>.fromJson(
+        response as Map<String, dynamic>,
+        null,
+      );
+
+      if (!apiResponse.success) {
+        throw ApiException.fromApiError(apiResponse.error!);
+      }
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
   ApiException _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:

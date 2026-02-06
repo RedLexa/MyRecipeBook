@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'package:provider/provider.dart';
 import '../services/api_service.dart';
+import '../view_models/login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
 	const LoginScreen({Key? key}) : super(key: key);
@@ -13,155 +14,127 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-	final TextEditingController _usernameController = TextEditingController();
-	final TextEditingController _passwordController = TextEditingController();
-	final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-	bool _isLoading = false;
-	String? _errorMessage;
-	bool get _canSubmit =>
-			_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
-	@override
-	void initState() {
-		super.initState();
-		_usernameController.addListener(_onFieldsChanged);
-		_passwordController.addListener(_onFieldsChanged);
-	}
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool get _canSubmit =>
+	  _usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
-	void _onFieldsChanged() {
-		setState(() {});
-	}
+  @override
+  void initState() {
+	super.initState();
+	_usernameController.addListener(_onFieldsChanged);
+	_passwordController.addListener(_onFieldsChanged);
+  }
 
-	void _login() async {
-		setState(() {
-			_errorMessage = null;
-		});
-		if (_formKey.currentState?.validate() ?? false) {
-			setState(() {
-				_isLoading = true;
-			});
-			try {
-				final apiService = Provider.of<ApiService>(context, listen: false);
-				final response = await apiService.post('/users/login', data: {
-					'username': _usernameController.text.trim(),
-					'password': _passwordController.text.trim(),
-				});
-				setState(() {
-					_isLoading = false;
-				});
-				   if (response != null && response['success'] == true) {
-					   if (!mounted) return;
-					   Navigator.of(context).pushReplacement(
-						   MaterialPageRoute(builder: (context) => const HomeScreen()),
-					   );
-							 } else {
-									 setState(() {
-										 final username = _usernameController.text.trim();
-										 if ((username == 'alice' || username == 'bob') && response != null && response['error'] != null && (response['error']['code'] == 'INVALID_PASSWORD' || (response['error']['message']?.toLowerCase().contains('password') ?? false))) {
-											 _errorMessage = 'Invalid password.';
-										 } else if (username == 'alice' || username == 'bob') {
-											 _errorMessage = 'Invalid password.';
-										 } else {
-											 _errorMessage = 'Login failed, only users alice and bob exist.';
-										 }
-									 });
-							 }
-					 } catch (e) {
-							 setState(() {
-								 _isLoading = false;
-								 final username = _usernameController.text.trim();
-								 if (username == 'alice' || username == 'bob') {
-									 _errorMessage = 'Invalid password.';
-								 } else {
-									 _errorMessage = 'Login failed, only users alice and bob exist.';
-								 }
-							 });
-					 }
-		}
+  void _onFieldsChanged() {
+	setState(() {});
+  }
+
+  Future<void> _login(LoginViewModel viewModel) async {
+	if (_formKey.currentState?.validate() ?? false) {
+	  final success = await viewModel.login(
+		_usernameController.text,
+		_passwordController.text,
+	  );
+	  if (success && mounted) {
+		Navigator.of(context).pushReplacement(
+		  MaterialPageRoute(builder: (context) => const HomeScreen()),
+		);
+	  }
 	}
+  }
 
 	@override
 	Widget build(BuildContext context) {
-		return Scaffold(
-			appBar: AppBar(title: const Text('Login')),
-			body: Center(
-				child: SingleChildScrollView(
-					padding: const EdgeInsets.all(24.0),
-					child: Form(
-						key: _formKey,
-						child: Column(
-							mainAxisSize: MainAxisSize.min,
-							children: [
-								// Logo
-								Padding(
-									padding: const EdgeInsets.only(bottom: 32.0),
-									child: Text(
-										'MyRecipeBook',
-										style: TextStyle(
-											fontSize: 32,
-											fontWeight: FontWeight.bold,
-											color: Theme.of(context).colorScheme.primary,
-											letterSpacing: 1.5,
-										),
+		return ChangeNotifierProvider<LoginViewModel>(
+			create: (context) => LoginViewModel(Provider.of<ApiService>(context, listen: false)),
+			child: Consumer<LoginViewModel>(
+				builder: (context, viewModel, _) {
+					return Scaffold(
+						appBar: AppBar(title: const Text('Login')),
+						body: Center(
+							child: SingleChildScrollView(
+								padding: const EdgeInsets.all(24.0),
+								child: Form(
+									key: _formKey,
+									child: Column(
+										mainAxisSize: MainAxisSize.min,
+										children: [
+											Padding(
+												padding: const EdgeInsets.only(bottom: 32.0),
+												child: Text(
+													'MyRecipeBook',
+													style: TextStyle(
+														fontSize: 32,
+														fontWeight: FontWeight.bold,
+														color: Theme.of(context).colorScheme.primary,
+														letterSpacing: 1.5,
+													),
+												),
+											),
+											TextFormField(
+												controller: _usernameController,
+												decoration: const InputDecoration(labelText: 'Username'),
+												validator: (value) =>
+														(value == null || value.isEmpty) ? 'Enter username' : null,
+											),
+											const SizedBox(height: 16),
+											TextFormField(
+												controller: _passwordController,
+												decoration: const InputDecoration(labelText: 'Password'),
+												obscureText: true,
+												validator: (value) =>
+														(value == null || value.isEmpty) ? 'Enter password' : null,
+											),
+											const SizedBox(height: 24),
+											if (viewModel.errorMessage != null)
+												Padding(
+													padding: const EdgeInsets.only(bottom: 12),
+													child: Text(
+														viewModel.errorMessage!,
+														style: const TextStyle(color: Colors.red),
+													),
+												),
+											SizedBox(
+												width: double.infinity,
+												child: ElevatedButton(
+													onPressed: (viewModel.isLoading || !_canSubmit)
+															? null
+															: () => _login(viewModel),
+													style: ElevatedButton.styleFrom(
+														backgroundColor: _canSubmit
+																? Colors.blue
+																: Theme.of(context).disabledColor,
+													),
+													child: viewModel.isLoading
+															? const SizedBox(
+																	width: 20,
+																	height: 20,
+																	child: CircularProgressIndicator(strokeWidth: 2),
+																)
+															: const Text('Login'),
+												),
+											),
+											const SizedBox(height: 16),
+											TextButton(
+												onPressed: () {
+													Navigator.of(context).push(
+														MaterialPageRoute(builder: (context) => const RegisterScreen()),
+													);
+												},
+												child: const Text(
+													"Don't have an account? Register here",
+													style: TextStyle(fontSize: 16),
+												),
+											),
+										],
 									),
 								),
-								// ...existing form fields and button...
-								TextFormField(
-									controller: _usernameController,
-									decoration: const InputDecoration(labelText: 'Username'),
-									validator: (value) =>
-											(value == null || value.isEmpty) ? 'Enter username' : null,
-								),
-								const SizedBox(height: 16),
-								TextFormField(
-									controller: _passwordController,
-									decoration: const InputDecoration(labelText: 'Password'),
-									obscureText: true,
-									validator: (value) =>
-											(value == null || value.isEmpty) ? 'Enter password' : null,
-								),
-								const SizedBox(height: 24),
-								if (_errorMessage != null)
-									Padding(
-										padding: const EdgeInsets.only(bottom: 12),
-										child: Text(
-											_errorMessage!,
-											style: const TextStyle(color: Colors.red),
-										),
-									),
-								SizedBox(
-									width: double.infinity,
-									child: ElevatedButton(
-										onPressed: (_isLoading || !_canSubmit) ? null : _login,
-										style: ElevatedButton.styleFrom(
-											backgroundColor: _canSubmit
-													? Colors.blue
-													: Theme.of(context).disabledColor,
-										),
-										child: _isLoading
-												? const SizedBox(
-														width: 20,
-														height: 20,
-														child: CircularProgressIndicator(strokeWidth: 2),
-													)
-												: const Text('Login'),
-									),
-								),
-								const SizedBox(height: 16),
-								TextButton(
-									onPressed: () {
-										Navigator.of(context).push(
-											MaterialPageRoute(builder: (context) => const RegisterScreen()),
-										);
-									},
-									child: const Text(
-										"Don't have an account? Register here",
-										style: TextStyle(fontSize: 16),
-									),
-								),
-							],
+							),
 						),
-					),
-				),
+					);
+				},
 			),
 		);
 	}
