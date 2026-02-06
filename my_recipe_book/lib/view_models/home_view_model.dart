@@ -52,6 +52,12 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
+    // Add a new recipe locally (optimistic update)
+  void addRecipe(RecipeModel recipe) {
+    _recipes.add(recipe);
+    notifyListeners();
+  }
+
   List<RecipeModel> get recipes => _recipes;
 
   bool get isLoading => _isLoading;

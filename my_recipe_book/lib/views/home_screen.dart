@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                 (route) => false,
               );
             },
-            icon: const Icon(Icons.account_circle),
+            icon: const Icon(Icons.logout, size: 24),
           ),
         ]
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_recipe_book/view_models/home_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -192,6 +193,7 @@ class _RecipeCreationViewState extends State<RecipeCreationView> {
                         content: Text("Recipe created successfully!"),
                       ),
                     );
+                    context.read<HomeViewModel>().addRecipe(newRecipe);
                   } catch (e) {
                     if (!context.mounted) return;
 
